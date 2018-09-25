@@ -56,7 +56,7 @@
         width: 100%;
         height: 100%;
 
-        background: rgba(black, .5);
+        background: rgba(black, .75);
 
         display: flex;
         align-items: center;
@@ -91,7 +91,11 @@
 
             width: 100%;
             max-width: 600px;
+            height: 100vh;
             max-height: 90vh;
+
+            display: flex;
+            align-items: center;
 
         }
 

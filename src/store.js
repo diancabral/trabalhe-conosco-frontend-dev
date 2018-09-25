@@ -11,13 +11,29 @@ export default new Vuex.Store({
 
     state: {
 
+        transaction : {
+
+            active : false,
+            user : {}
+
+        }
+
     },
 
     mutations: {
 
+        NEW_TRANSACTION : (state, user) => {
+
+            state.transaction.active = true;
+            state.transaction.user = user;
+
+        }
+
     },
 
-    actions: {
+    getters: {
+
+        transaction : state => state.transaction
 
     }
 

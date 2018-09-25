@@ -19,6 +19,8 @@ body {
     width: 100%;
     background: $md-grey-100;
 
+    user-select: none;
+
     overflow-y: scroll;
 
 }
