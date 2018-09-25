@@ -18,16 +18,6 @@
 
 </template>
 
-<script>
-
-    export default {
-
-
-
-    }
-
-</script>
-
 <style lang="scss">
 
     @import '@/scss/components.scss';
@@ -63,9 +53,7 @@
         display: flex;
         align-items: center;
 
-        box-shadow: 0 0 100px rgba(black, .1);
-
-        z-index: 100;
+        z-index: 1000;
 
         &__container {
 
@@ -97,7 +85,7 @@
 
             float: left;
 
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Raleway', sans-serif;
             @include font-sizer(18);
             color: white;
             font-weight: 300;

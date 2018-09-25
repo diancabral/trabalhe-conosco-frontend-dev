@@ -11,13 +11,13 @@ export default new Router({
 
     routes: [
 
-        // {
-        //
-        //     path: '/',
-        //     name: 'home',
-        //     component: () => import(/* webpackChunkName: "about" */ './views/Home.vue')
-        //
-        // },
+        {
+
+            path: '/payment/new/',
+            name: 'payment_new',
+            component: () => import(/* webpackChunkName: "about" */ './views/Payment.vue')
+
+        },
         //
         // {
         //
