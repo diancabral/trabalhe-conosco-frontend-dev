@@ -91,7 +91,7 @@
 
             width: 100%;
             max-width: 600px;
-            max-height: 70vh;
+            max-height: 90vh;
 
         }
 

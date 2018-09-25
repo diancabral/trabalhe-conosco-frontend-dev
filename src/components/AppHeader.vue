@@ -2,15 +2,25 @@
 
     <div :class="$style.header">
 
-        <div class="container"  :class="$style.headerContainer">
+        <div class="container" :class="$style.headerContainer">
 
-            <a :class="$style.headerLogo" href="/">
+            <!-- <div class="row align-items-center justify-content-space-between">
 
-                <img :class="$style.headerLogoImg" src="@/assets/logo.png" alt="PicPay">
+                <div class="col-auto"> -->
 
-            </a>
+                    <a :class="$style.headerLogo" href="/">
 
-            <div :class="$style.headerTitle">Front-end Test</div>
+                        <img :class="$style.headerLogoImg" src="@/assets/logo.png" alt="PicPay">
+
+                    </a>
+
+                    <div :class="$style.headerTitle">Front-end Test</div>
+
+                <!-- </div>
+
+                <div class="col-auto">asdafs</div> -->
+
+            <!-- </div> -->
 
         </div>
 
@@ -85,8 +95,11 @@
 
             float: left;
 
+            height: 40px;
+
             font-family: 'Raleway', sans-serif;
             @include font-sizer(18);
+            line-height: 40px;
             color: white;
             font-weight: 300;
 
