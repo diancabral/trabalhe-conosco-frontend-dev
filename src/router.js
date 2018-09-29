@@ -27,6 +27,14 @@ export default new Router({
 
         },
 
+        {
+
+            path: '/cards/new',
+            name: 'cards_new',
+            component: () => import('./views/CreditCardsNew.vue')
+
+        },
+
     ]
 
 });

@@ -1,6 +1,11 @@
 <template lang="html">
 
-    <div :class="$style.card">
+    <div :class="[
+
+        $style.card,
+        data.active ? $style.cardActive : null
+
+    ]">
 
         <div class="row align-items-center">
 
@@ -9,12 +14,12 @@
                 <div :class="[
 
                     $style.cardIcon,
-                    mode === 'empty' ? $style.cardIconError : null
+                    mode === 'empty' ? $style.cardIconError : null,
+                    data.active ? $style.cardIconActive : null
 
                 ]">
 
-                    <app-icon glyph="credit_card" v-if="mode === 'payment'" />
-                    <app-icon glyph="error" v-else-if="mode === 'empty'" />
+                    <app-icon :glyph="icon" />
 
                 </div>
 
@@ -22,7 +27,8 @@
 
             <div class="col">
 
-                <div :class="$style.cardMain" v-if="mode === 'payment'">Forma de pagamento</div>
+                <div :class="$style.cardMain" v-if="data.active">Seu cartão principal</div>
+                <div :class="$style.cardMain" v-else-if="mode === 'payment'">Forma de pagamento</div>
                 <div :class="[
 
                     $style.cardType,
@@ -65,6 +71,22 @@
 
         props : {
 
+            data : {
+
+                type : Object,
+                default(){
+
+                    return {
+
+                        number : '',
+                        active : false
+
+                    }
+
+                }
+
+            },
+
             mode : {
 
                 type : String,
@@ -89,7 +111,25 @@
 
             number(){
 
-                return this.mode === 'empty' ? 'Clique aqui para cadastrar' : '1234567890111213'.replace(/\d(?=\d{4})/g, "*").replace(/(.{4})/g, '$1 ')
+                return this.mode === 'empty' ? 'Clique aqui para cadastrar' : this.data.number.replace(/\d(?=\d{4})/g, "*").replace(/(.{4})/g, '$1 ')
+
+            },
+
+            icon(){
+
+                let icon = 'credit_card';
+
+                if(this.mode === 'empty'){
+
+                    icon = 'error';
+
+                } else if(this.data.active){
+
+                    icon = 'done';
+
+                }
+
+                return icon;
 
             }
 
@@ -120,6 +160,14 @@
         transition: background-color .2s ease;
 
         cursor: pointer;
+
+        &--active {
+
+            background: rgba($md-blue-500, .05);
+
+            pointer-events: none;
+
+        }
 
         &:hover {
 
@@ -156,6 +204,17 @@
                 svg {
 
                     fill: $md-red-500;
+
+                }
+
+            }
+
+            &--active {
+
+                svg {
+
+                    fill: $md-green-500;
+
                 }
 
             }

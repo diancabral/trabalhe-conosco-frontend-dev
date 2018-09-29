@@ -10,6 +10,7 @@
   "dependencies": {
     "bootstrap": "^4.1.3",
     "diacritics": "^1.3.0",
+    "lodash": "^4.17.11",
     "material-colors": "^1.2.6",
     "v-money": "^0.8.1",
     "vue": "^2.5.17",

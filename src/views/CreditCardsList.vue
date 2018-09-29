@@ -4,7 +4,24 @@
 
         <div :class="$style.cards">
 
+            <div :class="$style.cardsTitle">Cartões Cadastrados</div>
+            <div :class="$style.cardsSubtitle">Selecione um cartão para usá-lo como principal ou cadastre um novo :)</div>
 
+            <transition-group name="translate" :class="$style.cardsRow">
+
+                <li :class="$style.cardsList" v-for="(data, index) in cardsList" :key="index">
+
+                    <app-credit-card :data="data" v-on:click.native="changeMainCard(data.number)" />
+
+                </li>
+
+            </transition-group>
+
+        </div>
+
+        <div :class="$style.cardsActions">
+
+            <app-button label="Cadastrar um novo cartão" color="blue" icon="add" v-on:click.native="$router.push({ name : 'cards_new' })" />
 
         </div>
 
@@ -14,7 +31,79 @@
 
 <script>
 
+    import _array from 'lodash/array';
+    import _collection from 'lodash/collection';
+
+    /* */
+
     export default {
+
+        data(){
+
+            return {
+
+                cards : [
+
+                    {
+
+                        number : '5444149323412732',
+                        active : true
+
+                    },
+
+                    {
+
+                        number : '4024007106697047',
+                        active : false
+
+                    },
+
+                    {
+
+                        number : '4389354417819814',
+                        active : false
+
+                    }
+
+                ]
+
+            }
+
+        },
+
+        computed : {
+
+            cardsList(){
+
+                return _collection.orderBy(this.cards, 'active', 'desc');
+
+            }
+
+        },
+
+        methods : {
+
+            changeMainCard(card){
+
+                const self = this;
+
+                this.cards.forEach((value, index) => {
+
+                    self.$set(value, 'active', false);
+
+                });
+
+                const index = _array.findIndex(this.cards, {
+
+                    number : card
+
+                });
+
+                this.$set(this.cards[index], 'active', true);
+
+            }
+
+        },
 
         beforeMount(){
 
@@ -42,7 +131,79 @@
 
         width: 100%;
 
-        padding: 0 $theme-padding $theme-padding;
+        padding: $theme-padding;
+
+        &__title {
+
+            float: left;
+
+            width: 100%;
+
+            padding-top: $theme-padding;
+
+            text-align: center;
+            font-family: 'Raleway', sans-serif;
+            @include font-sizer(24);
+            font-weight: 400;
+            color: $md-blue-500;
+
+        }
+
+        &__subtitle {
+
+            float: left;
+
+            width: 100%;
+
+            padding-bottom: $theme-padding * 2;
+
+            text-align: center;
+            font-family: 'Raleway', sans-serif;
+            @include font-sizer(16);
+            font-weight: 400;
+            color: $md-grey-500;
+
+        }
+
+        &__row {
+
+            float: left;
+
+            width: 100%;
+
+            margin: 0;
+            padding: 0;
+
+            list-style: none;
+
+        }
+
+        &__list {
+
+            float: left;
+
+            width: 100%;
+
+            &:not(:last-of-type){
+
+                margin-bottom: $theme-padding / 2;
+
+            }
+
+        }
+
+        &__actions {
+
+            float: left;
+
+            width: 100%;
+
+            padding: 0 $theme-padding $theme-padding;
+
+            display: flex;
+            justify-content: center;
+
+        }
 
     }
 

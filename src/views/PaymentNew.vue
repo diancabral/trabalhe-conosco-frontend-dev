@@ -30,7 +30,7 @@
 
             <div :class="$style.paymentActions">
 
-                <app-button label="Enviar Pagamento" color="blue" icon="send" disabled />
+                <app-button label="Enviar Pagamento" color="green" icon="send" disabled />
 
             </div>
 
