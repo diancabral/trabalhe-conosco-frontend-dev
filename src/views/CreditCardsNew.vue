@@ -29,12 +29,7 @@
                         $style.cardInfoShadowDate
 
                     ]"></div>
-                    <div :class="[
-
-                        $style.cardInfoShadow,
-                        $style.cardInfoShadowName
-
-                    ]"></div>
+                    <div :class="$style.cardInfoShadow"></div>
 
                 </div>
 
@@ -44,10 +39,68 @@
 
         <div :class="$style.add">
 
-            <div :class="$style.addField">
+            <div class="row">
 
-                <label :class="$style.addLabel">Número do cartão</label>
-                <input type="number" :class="$style.addInput" placeholder="1234 5678 9101 1121" v-model.number="number">
+                <div class="col-12">
+
+                    <div :class="$style.addField">
+
+                        <label :class="$style.addLabel">Número do cartão</label>
+                        <the-mask mask="#### #### #### ####" :class="$style.addInput" placeholder="XXXX XXXX XXXX XXXX" v-model="number" />
+
+                    </div>
+
+                </div>
+
+                <div class="col">
+
+                    <div :class="$style.addField">
+
+                        <label :class="$style.addLabel">Validade</label>
+                        <the-mask mask="##/##" :class="$style.addInput" placeholder="XX/XX" v-model="date" />
+
+                    </div>
+
+                </div>
+
+                <div class="col">
+
+                    <div :class="$style.addField">
+
+                        <label :class="$style.addLabel">
+
+                            <div class="row align-items-center no-gutters">
+
+                                <div class="col-auto">CVV</div>
+                                <div class="col-auto">
+
+                                    <app-tooltip label="Esse número normalmente está localizado na parte trazeira do cartão." limited top>
+
+                                        <app-icon :class="$style.addLabelHelp" glyph="help" />
+
+                                    </app-tooltip>
+
+                                </div>
+
+                            </div>
+
+                        </label>
+                        <the-mask mask="###" :class="$style.addInput" placeholder="XXX" v-model="cvv" />
+
+                    </div>
+
+                </div>
+
+                <div class="col-12">
+
+                    <div :class="$style.addField">
+
+                        <label :class="$style.addLabel">Nome impresso no cartão</label>
+                        <input type="text" :class="$style.addInput" placeholder="João da Silva José" v-model="name">
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -65,13 +118,24 @@
 
 <script>
 
+    import { TheMask } from 'vue-the-mask';
+
     export default {
+
+        components: {
+
+            TheMask
+
+        },
 
         data(){
 
             return {
 
-                number : 0
+                number : '',
+                date: '',
+                cvv : '',
+                name : ''
 
             }
 
@@ -81,7 +145,7 @@
 
             cardNumber(){
 
-                return this.number.toString().replace(/(.{4})/g, '$1 ');
+                return this.number.replace(/(.{4})/g, '$1 ');
 
             }
 
@@ -270,6 +334,7 @@
                 float: left;
 
                 height: $size;
+                width: 100%;
 
                 background: rgba(black, .1);
 
@@ -280,12 +345,6 @@
                     width: 30%;
 
                     margin-bottom: 5px;
-
-                }
-
-                &--name {
-
-                    width: 100%;
 
                 }
 
@@ -309,7 +368,7 @@
 
             width: 100%;
 
-            margin-bottom: $theme-padding * 2;
+            margin-bottom: $theme-padding;
 
         }
 
@@ -319,12 +378,32 @@
 
             width: 100%;
 
+            margin: 0;
+
             font-family: 'Raleway', sans-serif;
-            @include font-sizer(13);
+            @include font-sizer(11);
             letter-spacing: 2px;
             text-transform: uppercase;
+            line-height: 1;
             font-weight: 600;
             color: $md-blue-500;
+
+            &__help {
+
+                $size: 18px;
+
+                float: left;
+
+                width: $size;
+                height: $size;
+
+                border-radius: $size / 2;
+
+                fill: $md-grey-500;
+
+                cursor: help;
+
+            }
 
         }
 
@@ -334,11 +413,12 @@
 
             width: 100%;
 
-            padding: $theme-padding / 2 0;
+            padding-bottom: $theme-padding / 2;
 
-            font-family: 'Raleway', sans-serif;
-            @include font-sizer(24);
-            font-weight: 400;
+            font-family: monospace;
+            @include font-sizer(20);
+            font-weight: 600;
+            text-transform: uppercase;
 
             border: none;
             border-bottom: 2px solid $md-grey-300;

@@ -179,7 +179,8 @@
 
         </div>
 
-        <app-modal :active="$route.fullPath !== '/' && $store.getters.transaction.active">
+        <!-- <app-modal :active="$route.fullPath !== '/' && $store.getters.transaction.active"> -->
+        <app-modal :active="$route.fullPath !== '/'">
 
             <transition name="translate-quint">
 

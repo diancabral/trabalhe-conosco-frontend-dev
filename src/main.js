@@ -25,6 +25,7 @@ Vue.component('app-modal', () => ({ component: import('@/components/AppModal.vue
 Vue.component('app-page', () => ({ component: import('@/components/AppPage.vue') }));
 Vue.component('app-user', () => ({ component: import('@/components/AppUser.vue') }));
 Vue.component('app-credit-card', () => ({ component: import('@/components/AppCreditCard.vue') }));
+Vue.component('app-tooltip', () => ({ component: import('@/components/AppTooltip.vue') }));
 
 /* */
 
