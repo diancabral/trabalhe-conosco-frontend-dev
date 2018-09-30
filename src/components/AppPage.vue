@@ -167,6 +167,7 @@
             border-top-right-radius: 10px;
 
             overflow-y: auto;
+            overflow-x: hidden;
 
         }
 

@@ -31,6 +31,20 @@ Vue.component('app-tooltip', () => ({ component: import('@/components/AppTooltip
 
 Vue.config.productionTip = false;
 
+/* */
+
+if(localStorage.getItem(store.getters.storageToken)){
+
+    store.dispatch('populateCards', JSON.parse(localStorage.getItem(store.getters.storageToken)));
+
+} else {
+
+    localStorage.setItem(store.getters.storageToken, JSON.stringify([]));
+
+}
+
+/* */
+
 new Vue({
 
     router,

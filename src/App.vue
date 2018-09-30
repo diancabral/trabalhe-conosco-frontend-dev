@@ -267,7 +267,7 @@
 
             newTransaction(user){
 
-                this.$store.commit('NEW_TRANSACTION', user);
+                this.$store.dispatch('newTransaction', user);
 
                 /* */
 

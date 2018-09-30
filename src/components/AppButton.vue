@@ -156,14 +156,11 @@ export default {
         letter-spacing: 1px;
     	color: white;
 
-    	background: rgba(white, 0);
+        background: rgba(white, 0);
 
     	display: flex;
         align-items: center;
         justify-content: center;
-
-        transition: .2 ease;
-        transition-property: color, background, transform;
 
     	cursor: pointer;
 
@@ -180,6 +177,8 @@ export default {
             height: 100%;
 
             border-radius: 100px;
+            transition: .2s ease;
+            transition-property: filter, background;
 
             z-index: -1;
 
@@ -250,8 +249,6 @@ export default {
 
         &--loading {
 
-    		background: #DDD !important;
-
     		color: #DDD !important;
 
     		pointer-events: none;
@@ -292,12 +289,26 @@ export default {
 
     	}
 
+        &--loading &__background {
+
+        	background: #DDD !important;
+
+        }
+
+        &--loading &__icon {
+
+        	opacity: 0;
+
+        }
+
         &__icon {
 
             width: 24px;
             height: 24px;
 
             fill: white;
+
+            transition: opacity .2s ease;
 
             &--label {
 
