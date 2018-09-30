@@ -5,7 +5,7 @@
         $style.card,
         data.active ? $style.cardActive : null
 
-    ]">
+    ]" v-on:click="emitMain()">
 
         <div class="row align-items-center">
 
@@ -56,6 +56,25 @@
                     <app-icon glyph="keyboard_arrow_right" />
 
                 </div>
+
+            </div>
+
+            <div class="col-auto" v-if="mode === 'list'">
+
+                <app-tooltip :label="data.active ? 'Você não pode excluir o seu cartão principal antes de escolher outro cartão para substituí-lo.' : 'Excluir cartão'" :limited="data.active" left>
+
+                    <div :class="[
+
+                        $style.cardDelete,
+                        data.active ? $style.cardDeleteDisabled : null
+
+                    ]" v-on:click.stop="deleteCard()">
+
+                        <app-icon glyph="close" />
+
+                    </div>
+
+                </app-tooltip>
 
             </div>
 
@@ -129,15 +148,27 @@
 
             cardInfo(){
 
-                // return this.mode === 'empty' ? 'Nenhum cartão de crédito cadastrado' : 'Mastercard';
+                let info;
 
-                const valid = new RegExp('mastercard|visa|american-express|diners-club|elo');
+                if(this.mode === 'empty'){
 
-                let info = this.cardFlag.length === 1 ? (valid.test(this.cardFlag[0].type) ? this.cardFlag[0] : 'Cartão genérico') : 'Cartão genérico';
+                    info = {
 
-                if(this.data.card_number === '1111111111111111'){
+                        niceType : 'Nenhum cartão de crédito cadastrado!'
 
-                    info = creditCardType.getTypeInfo(creditCardType.types.MASTERCARD);
+                    };
+
+                } else {
+
+                    const valid = new RegExp('mastercard|visa|american-express|diners-club|elo');
+
+                    info = this.cardFlag.length === 1 ? (valid.test(this.cardFlag[0].type) ? this.cardFlag[0] : 'Cartão genérico') : 'Cartão genérico';
+
+                    if(this.data.card_number === '1111111111111111'){
+
+                        info = creditCardType.getTypeInfo(creditCardType.types.MASTERCARD);
+
+                    }
 
                 }
 
@@ -196,6 +227,32 @@
 
                 return number;
 
+            },
+
+            emitMain(){
+
+                if(this.mode == 'list'){
+
+                    this.$emit('main', this.data.card_number);
+
+                }
+
+            },
+
+            deleteCard(){
+
+                if(!this.data.active){
+
+                    let deletar = confirm(`Você realmente deseja excluir o cartão com final ${this.data.card_number.slice(-4)}`);
+
+                    if(deletar){
+
+                        this.$store.dispatch('removeCard', this.data.card_number);
+
+                    }
+
+                }
+
             }
 
         }
@@ -235,6 +292,24 @@
         &:hover {
 
             background: $md-grey-100;
+
+        }
+
+        &__delete {
+
+            &--disabled {
+
+                opacity: .2;
+
+                cursor: help;
+
+            }
+
+            svg {
+
+                fill: $md-red-500;
+
+            }
 
         }
 

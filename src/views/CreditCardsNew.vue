@@ -105,7 +105,7 @@
                     <div :class="$style.addField">
 
                         <label :class="$style.addLabel">Validade</label>
-                        <the-mask mask="##/##" :class="$style.addInput" placeholder="XX/XX" v-model="date" />
+                        <the-mask mask="##/##" :masked="true" :class="$style.addInput" placeholder="XX/XX" v-model="date" />
 
                     </div>
 

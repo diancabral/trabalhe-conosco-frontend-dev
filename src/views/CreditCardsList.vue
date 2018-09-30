@@ -7,15 +7,15 @@
             <div :class="$style.cardsTitle">Cartões Cadastrados</div>
             <div :class="$style.cardsSubtitle">Selecione um cartão para usá-lo como principal ou cadastre um novo :)</div>
 
-            <transition-group name="translate" :class="$style.cardsRow">
+            <ul :class="$style.cardsRow">
 
                 <li :class="$style.cardsList" v-for="(data, index) in cardsList" :key="index">
 
-                    <app-credit-card :data="data" v-on:click.native="changeMainCard(data)" />
+                    <app-credit-card :data="data" v-on:main="changeMainCard(data)" />
 
                 </li>
 
-            </transition-group>
+            </ul>
 
         </div>
 

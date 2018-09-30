@@ -23,7 +23,9 @@ const store = new Vuex.Store({
         transaction : {
 
             active : false,
-            user : {}
+            value : 0,
+            user : {},
+            receipt: {}
 
         },
 
@@ -37,6 +39,12 @@ const store = new Vuex.Store({
 
             state.transaction.active = true;
             state.transaction.user = user;
+
+        },
+
+        NEW_TRANSACTION_VALUE(state, value){
+
+            state.transaction.value = value;
 
         },
 
@@ -57,6 +65,23 @@ const store = new Vuex.Store({
             localStorage.setItem(state.storageToken, LZString.compress(JSON.stringify(state.cards)));
 
         },
+
+        REMOVE_CARD(state, card){
+
+            const cardIndex = _array.findIndex(state.cards, {
+
+                card_number : card
+
+            });
+
+            state.cards.splice(cardIndex, 1);
+
+            /* */
+
+            localStorage.setItem(state.storageToken, LZString.compress(JSON.stringify(state.cards)));
+
+        },
+
 
         MAIN_CARD(state, card){
 
@@ -108,6 +133,20 @@ const store = new Vuex.Store({
 
         },
 
+        removeCard(context, card){
+
+            return new Promise(resolve => {
+
+                context.commit('REMOVE_CARD', card);
+
+                /* */
+
+                resolve(card);
+
+            });
+
+        },
+
         mainCard(context, card){
 
             return new Promise(resolve => {
@@ -122,10 +161,15 @@ const store = new Vuex.Store({
 
         },
 
-
         newTransaction(context, user){
 
             context.commit('NEW_TRANSACTION', user);
+
+        },
+
+        newTransactionValue(context, value){
+
+            context.commit('NEW_TRANSACTION_VALUE', value);
 
         }
 

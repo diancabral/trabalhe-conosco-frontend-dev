@@ -30,7 +30,7 @@
 
             <div :class="$style.paymentActions">
 
-                <app-button label="Enviar Pagamento" color="green" icon="send" :disabled="!transaction.value" />
+                <app-button label="Enviar Pagamento" color="green" icon="send" :disabled="!transaction.value" :loading="transaction.sending" v-on:click.native="sendPayment()" />
 
             </div>
 
@@ -70,7 +70,8 @@
                         precision: 2,
                         masked: false
 
-                    }
+                    },
+                    sending: false
 
                 }
 
@@ -80,9 +81,25 @@
 
         beforeMount(){
 
+            if(this.$store.getters.transaction.value){
+
+                this.transaction.value = this.$store.getters.transaction.value;
+
+            }
+
             if(!this.$store.getters.transaction.active){
 
                 this.$router.push('/');
+
+            }
+
+        },
+
+        watch : {
+
+            'transaction.value' : function(value){
+
+                this.$store.dispatch('newTransactionValue', value);
 
             }
 
@@ -113,6 +130,47 @@
                 this.$router.push({
 
                     name: this.card ? 'cards_list' : 'cards_new'
+
+                })
+
+            },
+
+            sendPayment(){
+
+                let data = {
+
+                    ...this.card,
+                    ...this.$store.getters.transaction.user
+
+                };
+
+                /* */
+
+                this.$set(data, 'card_number', '1111111111111111');
+                this.$set(data, 'value', this.transaction.value);
+                this.$set(data, 'destination_user_id', data.id);
+
+                /* */
+
+                this.$delete(data, 'id');
+                this.$delete(data, 'active');
+                this.$delete(data, 'img');
+                this.$delete(data, 'name');
+                this.$delete(data, 'username');
+
+                /* */
+
+                this.transaction.sending = true;
+
+                this.$http.post('http://careers.picpay.com/tests/mobdev/transaction', data).then(response => {
+
+                    console.log(response);
+                    this.transaction.sending = false;
+
+                }).catch(error => {
+
+                    console.log(error);
+                    this.transaction.sending = false;
 
                 })
 
