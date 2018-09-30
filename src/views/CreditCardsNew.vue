@@ -283,9 +283,10 @@
 
                 this.$store.dispatch('newCard', {
 
-                    number : this.cardNumber,
+                    card_number: this.cardNumber,
                     cvv: this.cvv,
-                    expiry_date : this.date
+                    expiry_date: this.date,
+                    name: this.name
 
                 }).then(response => {
 

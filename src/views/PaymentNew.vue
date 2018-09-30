@@ -24,13 +24,13 @@
 
             <div :class="$style.paymentCard">
 
-                <app-credit-card v-on:click.native="changeCreditCard()" mode="empty" />
+                <app-credit-card :data="card ? card : {}" v-on:click.native="changeCreditCard()" :mode="card ? 'payment' : 'empty'" />
 
             </div>
 
             <div :class="$style.paymentActions">
 
-                <app-button label="Enviar Pagamento" color="green" icon="send" disabled />
+                <app-button label="Enviar Pagamento" color="green" icon="send" :disabled="!transaction.value" />
 
             </div>
 
@@ -43,6 +43,7 @@
 <script>
 
     import { Money } from 'v-money';
+    import _array from 'lodash/array';
 
     /* */
 
@@ -89,6 +90,14 @@
 
         computed : {
 
+            card(){
+
+                const activeCard = _array.findIndex(this.$store.getters.cards, 'active');
+
+                return activeCard > -1 ? this.$store.getters.cards[activeCard] : false;
+
+            },
+
             user(){
 
                 return this.$store.getters.transaction.user;
@@ -103,7 +112,7 @@
 
                 this.$router.push({
 
-                    name: 'cards_list'
+                    name: this.card ? 'cards_list' : 'cards_new'
 
                 })
 

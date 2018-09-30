@@ -34,7 +34,7 @@
                     $style.cardType,
                     mode === 'empty' ? $style.cardTypeError : null
 
-                ]">{{ type }}</div>
+                ]">{{ cardInfo.niceType }}</div>
                 <div :class="[
 
                     $style.cardNumber,
@@ -67,6 +67,8 @@
 
 <script>
 
+    const creditCardType = require('credit-card-type');
+
     export default {
 
         props : {
@@ -78,7 +80,7 @@
 
                     return {
 
-                        number : '',
+                        card_number : '',
                         active : false
 
                     }
@@ -103,15 +105,49 @@
 
         computed : {
 
-            type(){
+            cardFlag(){
 
-                return this.mode === 'empty' ? 'Nenhum cartão de crédito cadastrado' : 'MasterCard';
+                return creditCardType(this.data.card_number);
+
+            },
+
+            cardMask(){
+
+                let mask = creditCardType.types.MASTERCARD;
+
+                const valid = new RegExp('american-express|diners-club');
+
+                if(valid.test(this.cardInfo.type)){
+
+                    mask = creditCardType.types.AMERICAN_EXPRESS;
+
+                }
+
+                return mask;
+
+            },
+
+            cardInfo(){
+
+                // return this.mode === 'empty' ? 'Nenhum cartão de crédito cadastrado' : 'Mastercard';
+
+                const valid = new RegExp('mastercard|visa|american-express|diners-club|elo');
+
+                let info = this.cardFlag.length === 1 ? (valid.test(this.cardFlag[0].type) ? this.cardFlag[0] : 'Cartão genérico') : 'Cartão genérico';
+
+                if(this.data.card_number === '1111111111111111'){
+
+                    info = creditCardType.getTypeInfo(creditCardType.types.MASTERCARD);
+
+                }
+
+                return info;
 
             },
 
             number(){
 
-                return this.mode === 'empty' ? 'Clique aqui para cadastrar' : this.data.number.replace(/\d(?=\d{4})/g, "*").replace(/(.{4})/g, '$1 ')
+                return this.mode === 'empty' ? 'Clique aqui para cadastrar' : this.cardNumberFormated(this.data.card_number.replace(/\d(?=\d{4})/g, "*"), this.cardMask);
 
             },
 
@@ -130,6 +166,35 @@
                 }
 
                 return icon;
+
+            }
+
+        },
+
+        methods : {
+
+            cardNumberFormated(number, type){
+
+                const card = creditCardType.getTypeInfo(type);
+
+                if(card){
+
+                    let offsets = [].concat(0, card.gaps, number.length);
+                    let components = [];
+
+                    for(let i = 0; offsets[i] < number.length; i++){
+
+                        let start = offsets[i];
+                        let end = Math.min(offsets[i + 1], number.length);
+                        components.push(number.substring(start, end));
+
+                    }
+
+                    return components.join(' ');
+
+                }
+
+                return number;
 
             }
 
@@ -164,8 +229,6 @@
         &--active {
 
             background: rgba($md-blue-500, .05);
-
-            pointer-events: none;
 
         }
 

@@ -199,6 +199,7 @@
 <script>
 
     const diacritics = require('diacritics').remove;
+    const LZString = require('lz-string');
 
     /* */
 
@@ -236,6 +237,16 @@
         },
 
         beforeMount(){
+
+            if(localStorage.getItem(this.$store.getters.storageToken)){
+
+                this.$store.dispatch('populateCards', JSON.parse(LZString.decompress(localStorage.getItem(this.$store.getters.storageToken))));
+
+            } else {
+
+                localStorage.setItem(this.$store.getters.storageToken, LZString.compress(JSON.stringify([])));
+
+            }
 
             for(var i = 0; i < 4; i++){
 

@@ -3,11 +3,18 @@ import Vuex from 'vuex';
 
 /* */
 
+import _array from 'lodash/array';
+const LZString = require('lz-string');
+
+/* */
+
 Vue.use(Vuex);
 
 /* */
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
+
+    strict: process.env.NODE_ENV !== 'production',
 
     state: {
 
@@ -41,9 +48,33 @@ export default new Vuex.Store({
 
             });
 
-            card.active = true;
+            card.active = true; //active
 
             state.cards.push(card);
+
+            /* */
+
+            localStorage.setItem(state.storageToken, LZString.compress(JSON.stringify(state.cards)));
+
+        },
+
+        MAIN_CARD(state, card){
+
+            const self = this;
+
+            state.cards.forEach(value => {
+
+                self._vm.$set(value, 'active', false);
+
+            });
+
+            const index = _array.findIndex(state.cards, {
+
+                card_number : card
+
+            });
+
+            this._vm.$set(state.cards[index], 'active', true);
 
         },
 
@@ -77,6 +108,21 @@ export default new Vuex.Store({
 
         },
 
+        mainCard(context, card){
+
+            return new Promise(resolve => {
+
+                context.commit('MAIN_CARD', card);
+
+                /* */
+
+                resolve(card);
+
+            });
+
+        },
+
+
         newTransaction(context, user){
 
             context.commit('NEW_TRANSACTION', user);
@@ -88,8 +134,11 @@ export default new Vuex.Store({
     getters: {
 
         storageToken : state => state.storageToken,
-        transaction : state => state.transaction
+        transaction : state => state.transaction,
+        cards : state => state.cards
 
     }
 
 });
+
+export default store;

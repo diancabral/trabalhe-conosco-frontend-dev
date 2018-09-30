@@ -1,12 +1,6 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
 
-require('material-colors/dist/colors.var.css');
-
-/* */
-
-Vue.use(VueResource);
-
 /* */
 
 import router from './router';
@@ -15,6 +9,12 @@ import store from './store';
 /* */
 
 import App from './App.vue';
+
+require('material-colors/dist/colors.var.css');
+
+/* */
+
+Vue.use(VueResource);
 
 /* */
 
@@ -33,22 +33,10 @@ Vue.config.productionTip = false;
 
 /* */
 
-if(localStorage.getItem(store.getters.storageToken)){
-
-    store.dispatch('populateCards', JSON.parse(localStorage.getItem(store.getters.storageToken)));
-
-} else {
-
-    localStorage.setItem(store.getters.storageToken, JSON.stringify([]));
-
-}
-
-/* */
-
 new Vue({
 
     router,
     store,
-    render: h => h(App)
+    render: h => h(App),
 
 }).$mount('#app');

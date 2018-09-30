@@ -11,7 +11,7 @@
 
                 <li :class="$style.cardsList" v-for="(data, index) in cardsList" :key="index">
 
-                    <app-credit-card :data="data" v-on:click.native="changeMainCard(data.number)" />
+                    <app-credit-card :data="data" v-on:click.native="changeMainCard(data)" />
 
                 </li>
 
@@ -31,51 +31,17 @@
 
 <script>
 
-    import _array from 'lodash/array';
     import _collection from 'lodash/collection';
 
     /* */
 
     export default {
 
-        data(){
-
-            return {
-
-                cards : [
-
-                    {
-
-                        number : '5444149323412732',
-                        active : true
-
-                    },
-
-                    {
-
-                        number : '4024007106697047',
-                        active : false
-
-                    },
-
-                    {
-
-                        number : '4389354417819814',
-                        active : false
-
-                    }
-
-                ]
-
-            }
-
-        },
-
         computed : {
 
             cardsList(){
 
-                return _collection.orderBy(this.cards, 'active', 'desc');
+                return _collection.orderBy(this.$store.getters.cards, 'active', 'desc');
 
             }
 
@@ -85,21 +51,15 @@
 
             changeMainCard(card){
 
-                const self = this;
+                this.$store.dispatch('mainCard', card.card_number).then(response => {
 
-                this.cards.forEach((value, index) => {
+                    this.$router.push({
 
-                    self.$set(value, 'active', false);
+                        name: 'payment_new'
 
-                });
-
-                const index = _array.findIndex(this.cards, {
-
-                    number : card
+                    });
 
                 });
-
-                this.$set(this.cards[index], 'active', true);
 
             }
 
